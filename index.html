@@ -131,48 +131,6 @@
 
         .copy-btn:active { transform: scale(0.95); }
 
-        /* THE GEOCITIES FUN SECTION STYLES */
-        .geocities-card {
-            background: #000080 !important; /* Classic Windows Blue */
-            border: 3px outset #fff !important;
-            border-radius: 0 !important;
-            color: #fff !important;
-            font-family: "Times New Roman", Times, serif !important;
-        }
-
-        .blink {
-            animation: blinker 1s linear infinite;
-            color: #00ff00;
-            font-weight: bold;
-        }
-
-        @keyframes blinker {
-            50% { opacity: 0; }
-        }
-
-        .visitor-counter {
-            background: #000;
-            color: #00ff00;
-            font-family: 'Courier New', monospace;
-            padding: 5px 10px;
-            border: 2px inset #666;
-            display: inline-block;
-            font-size: 1.5rem;
-            letter-spacing: 2px;
-        }
-
-        .under-construction {
-            width: 50px;
-            height: 50px;
-            background: yellow;
-            border: 2px solid black;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            animation: spin 2s linear infinite;
-        }
-
         /* THE HORRIBLE LEGAL STUFF STYLES */
         #legal-nightmare {
             background: #ff00ff !important;
@@ -296,38 +254,18 @@
     </section>
 
     <section id="fun" class="page-section">
-        <center>
-            <h2 style="font-family: 'Comic Sans MS'; color: #00ff00; text-decoration: underline;">*** fun ***</h2>
-            <div class="under-construction"></div>
-            <span class="blink">!!!new!!!</span>
-            <div class="under-construction"></div>
-        </center>
-
+        <h2 style="font-family: 'Fira Code';">/fun</h2>
         <div class="grid">
-            <div class="card geocities-card">
-                <div style="background: #c0c0c0; color: #000; padding: 2px; margin-bottom: 10px; font-weight: bold; border: 1px solid #000;">
-                    quote.exe
-                </div>
-                <p id="quote-box" style="font-size: 1.2rem; min-height: 60px; color: #ffff00; text-shadow: 2px 2px #000;">"click that button"</p>
-                <button class="copy-btn" style="background: #c0c0c0; color: black; border: 2px outset white; border-radius: 0;" onclick="newQuote()">REGENERATE</button>
+            <div class="card">
+                <h3>random quote</h3>
+                <p id="quote-box" style="font-style: italic; min-height: 60px;">"press that button"</p>
+                <button class="copy-btn" onclick="newQuote()">regenerate</button>
             </div>
-
-            <div class="card geocities-card">
-                <div style="background: #c0c0c0; color: #000; padding: 2px; margin-bottom: 10px; font-weight: bold; border: 1px solid #000;">
-                    clickthatbutton-v2
-                </div>
-                <p>YOU ARE VISITOR #:</p>
-                <div class="visitor-counter" id="click-count">00000</div>
-                <br><br>
-                <button class="copy-btn" style="background: #c0c0c0; color: black; border: 2px outset white; border-radius: 0;" onclick="incrementClick()">click for a surprise</button>
-            </div>
-
-            <div class="card geocities-card" style="grid-column: 1 / -1; text-align: center;">
-                <marquee scrollamount="10" direction="left" style="background: transparent; border: none; font-family: 'Courier New';">
-                    people who say assembly is hard are noobs 
-                </marquee>
-                <p style="font-size: 0.8rem;">best viewed in <span style="color: #ff00ff;">computer</span> at 4k</p>
-                <img src="https://www.free-website-hit-counter.com/c.php?d=9&id=12345&s=1" alt="hit counter" style="filter: hue-rotate(90deg);">
+            <div class="card">
+                <h3>Click-o-Meter</h3>
+                <p style="color: var(--text-dim);">current score:</p>
+                <h1 id="click-count">0</h1>
+                <button class="copy-btn" onclick="incrementClick()">add +1</button>
             </div>
         </div>
     </section>
@@ -338,8 +276,8 @@
             <h1>LEGAL STUFF!!!!</h1>
             <p class="fire-text">leeeeeeeeeeegal</p>
             <div style="background: yellow; color: black; padding: 10px; transform: skewX(-20deg);">
-                <p>by visiting this page u agree to the terms of service and 
-                   cookies.</p>
+                <p>BY VISITING THIS PAGE YOU AGREE TO the terms of service AND ALSO 
+                   accept the cookies and privacy policy</p>
             </div>
             <p style="font-size: 50px;">woah</p>
             <ul style="text-align: left; list-style: square;">
@@ -347,7 +285,7 @@
                 <li>copyright fdgfdgdfhgsfd</li>
                 <li>everything is copyrighted 1994-2026!!!!</li>
             </ul>
-            <marquee direction="right" behavior="alternate" style="background: red;">colorS or colourS</marquee>
+            <marquee direction="right" behavior="alternate" style="background: red;">pretty color</marquee>
         </div>
     </section>
 
@@ -389,7 +327,7 @@
     let clicks = 0;
     function incrementClick() {
         clicks++;
-        document.getElementById('click-count').innerText = clicks.toString().padStart(5, '0');
+        document.getElementById('click-count').innerText = clicks;
     }
 
     const quotes = [
@@ -397,13 +335,14 @@
         "i learn",
         "does anyone esle hate gradle why does it fail at the slightest inconvenience",
         "real ones all dislike jeremy",
-        "c# is c++ and javas baby",
-        "people who say anything thats joking and has to do with bugs are larpers they arent even coders they just code print("helloworld") and want to be coders",
-        "all my homies dont like bobby"
-        "i like mourntheloss"
-        "ultra rare"
-        "noobs"
-        "i should make my own game show"
+        "c# is c++ and javas baby"
+        "real ones like bobby"
+        "people who bring up bugs in a humorous matter are larpers no normal coder does that"
+        "people who say coder genuinely are SO corny they be expecting praise for typing print(poopoo)"
+        "go into legal-stuff"
+        "also try terraria"
+        "speaking of i once tried to add a visit counter it was very hard to do and broke all of the separate pages it wasnt great"
+        "final quote??"
     ];
 
     function newQuote() {
