@@ -3,329 +3,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mourntheloss | system_root</title>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <title>mourntheloss | active</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #030303;
-            --surface: rgba(18, 18, 18, 0.8);
-            --accent: #00f2ff; /* Cyber Cyan */
-            --accent-secondary: #7000ff; /* Neon Purple */
-            --text: #e0e0e0;
-            --text-dim: #666;
-            --border: rgba(255, 255, 255, 0.1);
-            --radius: 4px; /* Sharper, more technical look */
-            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        /* Scanline Overlay Effect */
-        body::before {
-            content: " ";
-            display: block;
-            position: fixed;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 9999;
-            background-size: 100% 4px, 3px 100%;
-            pointer-events: none;
+            --bg: #050505;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --accent: #00f2ff;
+            --glow: rgba(0, 242, 255, 0.5);
+            --secondary: #7000ff;
+            --text: #ffffff;
+            --text-dim: #a0a0a0;
+            --transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         * { 
             box-sizing: border-box; 
             margin: 0; padding: 0;
-            text-transform: lowercase;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         body {
             background-color: var(--bg);
-            background-image: 
-                radial-gradient(circle at 50% 50%, rgba(112, 0, 255, 0.05) 0%, transparent 50%),
-                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 100% 100%, 30px 30px, 30px 30px;
             color: var(--text);
-            line-height: 1.6;
             overflow-x: hidden;
+            background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050505 100%);
+        }
+
+        /* Animated Background Particles Effect */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(var(--accent) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.05;
+            z-index: -1;
+            animation: moveBg 20s linear infinite;
+        }
+
+        @keyframes moveBg {
+            from { background-position: 0 0; }
+            to { background-position: 100px 100px; }
         }
 
         nav {
             position: fixed;
-            top: 30px;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border);
-            padding: 6px;
-            border-radius: var(--radius);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 50px;
             z-index: 1000;
             display: flex;
-            gap: 2px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: slideDown 1s ease;
+        }
+
+        @keyframes slideDown {
+            from { top: -100px; opacity: 0; }
+            to { top: 20px; opacity: 1; }
         }
 
         nav a {
             color: var(--text-dim);
             text-decoration: none;
-            font-size: 0.75rem;
-            font-weight: 700;
+            font-size: 0.85rem;
+            font-weight: 600;
             cursor: pointer;
-            padding: 8px 16px;
+            padding: 8px 18px;
             transition: var(--transition);
-            position: relative;
+            border-radius: 25px;
         }
 
-        nav a:hover { color: var(--accent); }
-        nav a.active {
-            color: var(--accent);
-            background: rgba(0, 242, 255, 0.1);
-            box-shadow: inset 0 -2px 0 var(--accent);
+        nav a:hover, nav a.active {
+            color: #fff;
+            background: var(--accent);
+            box-shadow: 0 0 20px var(--glow);
+            transform: scale(1.1);
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 150px 20px;
+            padding: 120px 20px;
         }
 
         .page-section { 
             display: none; 
-            animation: emerge 0.6s ease-out forwards;
+            animation: zoomIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
-        
-        @keyframes emerge {
-            0% { opacity: 0; filter: brightness(2) blur(10px); transform: scale(0.98); }
-            100% { opacity: 1; filter: brightness(1) blur(0); transform: scale(1); }
+
+        @keyframes zoomIn {
+            0% { opacity: 0; transform: scale(0.5) rotate(-5deg); filter: blur(20px); }
+            100% { opacity: 1; transform: scale(1) rotate(0deg); filter: blur(0); }
         }
 
         .active-page { display: block; }
 
-        header {
-            margin-bottom: 80px;
-            position: relative;
-        }
-
-        .glitch-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 30px;
+        .profile-area {
+            text-align: center;
+            margin-bottom: 60px;
         }
 
         .profile-img {
-            width: 100px;
-            height: 100px;
-            border: 1px solid var(--accent);
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
-            filter: grayscale(1);
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 4px solid var(--accent);
+            box-shadow: 0 0 40px var(--glow);
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
             transition: var(--transition);
         }
 
         .profile-img:hover {
-            filter: grayscale(0);
-            box-shadow: 0 0 30px var(--accent);
-            transform: skewX(-5deg);
+            transform: rotate(360deg) scale(1.2);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
 
         h1 { 
-            font-size: 4rem; 
-            letter-spacing: -4px; 
-            background: linear-gradient(90deg, #fff, var(--accent));
+            font-size: 5rem; 
+            font-weight: 800;
+            letter-spacing: -3px; 
+            background: linear-gradient(to right, #fff, var(--accent), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.2));
+            animation: hueShift 5s infinite linear;
         }
 
-        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-        .span-2 { grid-column: span 2; }
-        .span-4 { grid-column: span 4; }
+        @keyframes hueShift {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
 
         .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            padding: 30px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 30px;
             position: relative;
-            overflow: hidden;
             transition: var(--transition);
+            cursor: pointer;
+            overflow: hidden;
         }
-
-        /* Card Hover Flash Effect */
-        .card::before {
-            content: "";
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            transition: 0.5s;
-        }
-
-        .card:hover::before { left: 100%; }
 
         .card:hover {
+            transform: translateY(-10px) scale(1.02) rotate(1deg);
+            background: rgba(255, 255, 255, 0.08);
             border-color: var(--accent);
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.15);
-            background: rgba(20, 20, 20, 0.9);
+            box-shadow: 0 20px 40px rgba(0, 242, 255, 0.2);
         }
 
-        .tag {
-            color: var(--accent-secondary);
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-            display: block;
-        }
+        .card h3 { font-size: 1.5rem; margin-bottom: 10px; }
 
-        .tech-pill {
+        .pill {
             display: inline-block;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            padding: 4px 12px;
+            background: var(--accent);
+            color: #000;
+            padding: 5px 15px;
+            border-radius: 20px;
             font-size: 0.7rem;
-            margin: 5px 5px 0 0;
-            color: var(--accent);
+            font-weight: 800;
+            margin-bottom: 15px;
         }
 
         .btn {
-            background: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 10px 20px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            letter-spacing: 1px;
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 800;
             cursor: pointer;
             transition: var(--transition);
             margin-top: 20px;
         }
 
         .btn:hover {
-            background: var(--accent);
-            color: #000;
-            box-shadow: 0 0 15px var(--accent);
+            transform: scale(1.1);
+            box-shadow: 0 0 30px #fff;
+        }
+
+        /* Shake animation for buttons on click */
+        .btn:active { animation: shake 0.2s; }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(5px); }
+            50% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
         }
 
         #click-count {
-            font-variant-numeric: tabular-nums;
-            background: linear-gradient(to bottom, #fff, #444);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 6rem;
+            font-weight: 900;
+            text-shadow: 0 0 50px var(--accent);
         }
 
         @media (max-width: 768px) {
             .grid { grid-template-columns: 1fr; }
-            .span-2, .span-4 { grid-column: span 1; }
-            h1 { font-size: 2.5rem; }
+            h1 { font-size: 3rem; }
         }
     </style>
 </head>
 <body>
 
 <nav id="nav">
-    <a data-target="home" class="active">/home</a>
-    <a data-target="projects">/projects</a>
-    <a data-target="addon">/addon</a>
-    <a data-target="about">/about</a>
-    <a data-target="misc">/misc</a>
+    <a data-target="home" class="active">home</a>
+    <a data-target="projects">work</a>
+    <a data-target="addon">updates</a>
+    <a data-target="about">about</a>
+    <a data-target="misc">extra</a>
 </nav>
 
 <div class="container">
     
     <section id="home" class="page-section active-page">
-        <header>
-            <div class="glitch-wrapper">
-                <img src="https://github.com/mourntheloss.png" alt="mourntheloss" class="profile-img">
-                <div>
-                    <h1>mourntheloss</h1>
-                    <p style="color: var(--accent-secondary); opacity: 0.8;">> what is that username bro</p>
-                </div>
-            </div>
-        </header>
+        <div class="profile-area">
+            <img src="https://github.com/mourntheloss.png" alt="mourntheloss" class="profile-img">
+            <h1>mourntheloss</h1>
+            <p style="color: var(--text-dim); font-size: 1.2rem; margin-top: 10px;">js building stuff havent really decided on what language i like</p>
+        </div>
 
         <div class="grid">
-            <div class="card span-2">
-                <span class="tag">active</span>
-                <p style="font-size: 1.1rem; color: #fff;">building ADDON for meteor</p>
+            <div class="card">
+                <span class="pill">CURRENTLY</span>
+                <h3>building ADDON</h3>
+                <p style="color: var(--text-dim);">meteor be cool</p>
             </div>
-            <div class="card span-2">
-                <span class="tag">dependencies</span>
-                <span class="tech-pill">C++</span>
-                <span class="tech-pill">ASM_X64</span>
-                <span class="tech-pill">JAVA</span>
-                <span class="tech-pill">PYTHON</span>
+            <div class="card">
+                <span class="pill">SKILLS</span>
+                <h3>stack</h3>
+                <p style="color: var(--accent); font-weight: bold;">c++ • assembly • java • python</p>
             </div>
         </div>
     </section>
 
     <section id="projects" class="page-section">
-        <h2 style="margin-bottom: 30px; letter-spacing: -1px;">[ remote_repos ]</h2>
+        <h2 style="font-size: 3rem; margin-bottom: 30px;">my projects</h2>
         <div class="grid">
-            <a href="#" class="card span-2" style="text-decoration:none; color:inherit;">
-                <span class="tag">project_01</span>
-                <h3 style="color:var(--accent)">ADDON</h3>
-                <p style="color: var(--text-dim); margin-top: 10px;">advanced modules for meteor.</p>
-                <div class="tech-pill">JAVA</div>
-            </a>
-            <a href="#" class="card span-2" style="text-decoration:none; color:inherit;">
-                <span class="tag">project_02</span>
-                <h3 style="color:var(--accent)">RECORDER</h3>
-                <p style="color: var(--text-dim); margin-top: 10px;">c++ lightweight screen capture.</p>
-                <div class="tech-pill">C++17</div>
-            </a>
-        </div>
-    </section>
-
-    <section id="addon" class="page-section">
-        <h2 style="margin-bottom: 30px;">[ dev_notes ]</h2>
-        <div class="grid">
-            <div class="card span-4">
-                <span class="tag">stdout</span>
-                <p contenteditable="true" style="outline: none; color: #888; font-size: 0.9rem; border-left: 2px solid var(--accent-secondary); padding-left: 15px;">
-                    // crystal aura coming soon<br>
-                    // combat modules cool<br>
-                    // anchor aura pretty stable.
-                    // ima be like carti and never drop it
-                </p>
+            <div class="card" onclick="window.location.href='#'">
+                <span class="pill">JAVA</span>
+                <h3>ADDON</h3>
+                <p style="color: var(--text-dim);">moderately advanced modules that i thought meteor was missing and needed</p>
+            </div>
+            <div class="card" onclick="window.location.href='#'">
+                <span class="pill">C++</span>
+                <h3>RECORDER</h3>
+                <p style="color: var(--text-dim);">lightweight screen capture for windows.</p>
             </div>
         </div>
     </section>
 
+    <section id="addon" class="page-section">
+        <h2 style="font-size: 3rem; margin-bottom: 30px;">latest notes</h2>
+        <div class="card" style="width: 100%;">
+            <span class="pill">DEV LOG</span>
+            <p style="font-size: 1.2rem; line-height: 2;">
+                CRYSTAL AURA COMING SOON<br>
+                combat modules my main interest rn<br>
+                anchor aura ok-ish-ly stable<br>
+                dropping whenever i want js like carti
+            </p>
+        </div>
+    </section>
+
     <section id="about" class="page-section">
-        <div class="card span-4">
-            <span class="tag">bio</span>
-            <p>i build code in c++, assembly, and java primarily for windows and linux</p>
-            <button class="btn" onclick="copyDiscord()">get_discord_id</button>
-            <span id="copy-status" style="margin-left: 15px; font-weight: bold; color: var(--accent);"></span>
+        <div class="card" style="text-align: center;">
+            <h2 style="font-size: 3rem; margin-bottom: 20px;">do not talk to me</h2>
+            <p style="color: var(--text-dim); margin-bottom: 20px;">low level stuff for windows</p>
+            <button class="btn" onclick="copyDiscord()">discord</button>
+            <p id="copy-status" style="margin-top: 15px; font-weight: bold; color: var(--accent); height: 20px;"></p>
         </div>
     </section>
 
     <section id="misc" class="page-section">
         <div class="grid">
-            <div class="card span-2">
-                <span class="tag">random_output</span>
-                <p id="quote-box" style="min-height: 80px; color: #aaa;">"system_online"</p>
-                <button class="btn" onclick="newQuote()">refresh</button>
+            <div class="card">
+                <span class="pill">thoughts</span>
+                <h3 id="quote-box">"very cool"</h3>
+                <button class="btn" onclick="newQuote()">next this one sucks</button>
             </div>
-            <div class="card span-2">
-                <span class="tag">global_counter</span>
-                <h1 id="click-count" style="font-size: 4rem;">0</h1>
-                <button class="btn" onclick="incrementClick()">increment</button>
+            <div class="card" style="text-align: center;">
+                <span class="pill">clik</span>
+                <h1 id="click-count">0</h1>
+                <button class="btn" onclick="incrementClick()">click me</button>
             </div>
         </div>
     </section>
 </div>
 
 <script>
-    // Navigation logic
     const links = document.querySelectorAll('nav a');
     const sections = document.querySelectorAll('.page-section');
 
     links.forEach(link => {
         link.addEventListener('click', () => {
             const target = link.getAttribute('data-target');
+            
             links.forEach(l => l.classList.remove('active'));
             link.classList.add('active');
+
             sections.forEach(s => {
                 s.classList.remove('active-page');
                 if(s.id === target) s.classList.add('active-page');
@@ -336,31 +326,37 @@
     function copyDiscord() {
         navigator.clipboard.writeText("ugrief");
         const status = document.getElementById('copy-status');
-        status.innerText = ">> copied_to_clipboard";
+        status.innerText = "Copied to clipboard!";
         setTimeout(() => status.innerText = "", 2000);
     }
 
     let clicks = 0;
     function incrementClick() {
         clicks++;
-        document.getElementById('click-count').innerText = clicks;
+        const count = document.getElementById('click-count');
+        count.innerText = clicks;
+        count.style.transform = "scale(1.2)";
+        setTimeout(() => count.style.transform = "scale(1)", 100);
     }
 
     const quotes = [
         "blueberry.", 
-        "java: 1kb -> 3kb jar. python: 3kb -> 9mb exe.", 
-        "we all love donlo.", 
-        "metal is a horrible thing what is apple doing", 
-        "people who bring up bugs like they make scripts are corny"
+        "all my homies hate duke", 
+        "donlo is my favorite donlo.", 
+        "metal is cool until u use it", 
+        "people who say "99 bugs on the wall" annoy me why are u like that shush lil homie"
     ];
 
     function newQuote() {
         const box = document.getElementById('quote-box');
+        box.style.transform = "translateX(50px)";
         box.style.opacity = 0;
+        
         setTimeout(() => {
             box.innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
+            box.style.transform = "translateX(0)";
             box.style.opacity = 1;
-        }, 200);
+        }, 300);
     }
 </script>
 </body>
