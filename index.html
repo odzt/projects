@@ -41,7 +41,8 @@
             z-index: 1000;
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
         nav a {
@@ -130,6 +131,45 @@
 
         .copy-btn:active { transform: scale(0.95); }
 
+        /* THE HORRIBLE LEGAL STUFF STYLES */
+        #legal-nightmare {
+            background: #ff00ff !important;
+            color: #00ff00 !important;
+            font-family: "Comic Sans MS", "Comic Sans", cursive !important;
+            padding: 50px;
+            border: 10px dashed yellow !important;
+            text-align: center;
+            cursor: wait;
+        }
+
+        #legal-nightmare h1 {
+            font-size: 50px;
+            color: yellow;
+            text-shadow: 5px 5px #ff0000;
+            animation: spin 0.5s linear infinite;
+        }
+
+        .fire-text {
+            font-weight: bold;
+            font-size: 2rem;
+            background: linear-gradient(0deg, #f00, #ff0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px red);
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        marquee {
+            font-size: 2rem;
+            background: blue;
+            color: white;
+            border: 5px solid white;
+        }
+
     </style>
 </head>
 <body>
@@ -138,6 +178,8 @@
     <a data-target="home" class="active">/home</a>
     <a data-target="projects">/projects</a>
     <a data-target="about">/about</a>
+    <a data-target="fun">/fun_stuff</a>
+    <a data-target="legal">/legal_stuff</a>
     <a href="https://github.com/mourntheloss" target="_blank">/github</a>
 </nav>
 
@@ -211,6 +253,42 @@
         </div>
     </section>
 
+    <section id="fun" class="page-section">
+        <h2 style="font-family: 'Fira Code';">/fun</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>random quote</h3>
+                <p id="quote-box" style="font-style: italic; min-height: 60px;">"it works on my machine"</p>
+                <button class="copy-btn" onclick="newQuote()">regenerate</button>
+            </div>
+            <div class="card">
+                <h3>Click-o-Meter</h3>
+                <p style="color: var(--text-dim);">current score:</p>
+                <h1 id="click-count">0</h1>
+                <button class="copy-btn" onclick="incrementClick()">add +1</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="legal" class="page-section">
+        <div id="legal-nightmare" class="card">
+            <marquee scrollamount="20">legal</marquee>
+            <h1>LEGAL STUFF!!!!</h1>
+            <p class="fire-text">leeeeeeeeeeegal</p>
+            <div style="background: yellow; color: black; padding: 10px; transform: skewX(-20deg);">
+                <p>BY VISITING THIS PAGE YOU AGREE TO GIVE ME YOUR leegal AND ALSO 
+                   leeeeeeeeeeeeeeeeeeeeeeeeeegaaaaaaaaaaaaaaaaaaaaaaaaaaaal.</p>
+            </div>
+            <p style="font-size: 50px;">woah</p>
+            <ul style="text-align: left; list-style: square;">
+                <li>no stealing</li>
+                <li>copyright fdgfdgdfhgsfd</li>
+                <li>everything is copyrighted 1994-2026!!!!</li>
+            </ul>
+            <marquee direction="right" behavior="alternate" style="background: red;">I AM NOT A LAWYER I JUST LIKE NEON COLORS</marquee>
+        </div>
+    </section>
+
 </div>
 
 <script>
@@ -239,11 +317,30 @@
 
     // discord copy
     function copyDiscord() {
-        const tag = "ugrief"; // tags dont exist no more
+        const tag = "ugrief"; 
         navigator.clipboard.writeText(tag);
         const status = document.getElementById('copy-status');
         status.innerText = "Copied!";
         setTimeout(() => status.innerText = "", 2000);
+    }
+
+    let clicks = 0;
+    function incrementClick() {
+        clicks++;
+        document.getElementById('click-count').innerText = clicks;
+    }
+
+    const quotes = [
+        "a banana walks into a freezer and says what do i do here",
+        "i learn",
+        "does anyone esle hate gradle why does it fail at the slightest inconvenience",
+        "real ones all dislike jeremy",
+        "c# is c++ and javas baby"
+    ];
+
+    function newQuote() {
+        const q = quotes[Math.floor(Math.random() * quotes.length)];
+        document.getElementById('quote-box').innerText = `"${q}"`;
     }
 </script>
 
