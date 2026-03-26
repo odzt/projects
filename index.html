@@ -1,136 +1,251 @@
-<style>
-    :root {
-        --bg: #030712;
-        --card-bg: rgba(15, 23, 42, 0.3);
-        --text: #f8fafc;
-        --text-dim: #94a3b8;
-        --accent: #38bdf8;
-        --accent-glow: rgba(56, 189, 248, 0.15);
-        --border: rgba(255, 255, 255, 0.05);
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mourntheloss</title>
+    <style>
+        :root {
+            --bg: #030712;
+            --card-bg: rgba(15, 23, 42, 0.3);
+            --text: #f8fafc;
+            --text-dim: #94a3b8;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.2);
+            --border: rgba(255, 255, 255, 0.05);
+        }
 
-    * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 
-    body {
-        font-family: 'Inter', sans-serif;
-        background-color: var(--bg);
-        background: radial-gradient(circle at 50% -20%, #1e293b 0%, transparent 50%),
-                    radial-gradient(circle at 0% 100%, #0c4a6e 0%, transparent 30%),
-                    #030712;
-        color: var(--text);
-        margin: 0;
-        line-height: 1.5;
-        overflow-x: hidden;
-    }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), #1e293b 0%, transparent 40%),
+                        radial-gradient(circle at 0% 100%, #0c4a6e 0%, transparent 30%),
+                        #030712;
+            color: var(--text);
+            margin: 0;
+            line-height: 1.5;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-    nav {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        padding: 20px;
-        backdrop-filter: blur(10px);
-        background: rgba(3, 7, 18, 0.8);
-        border-bottom: 1px solid var(--border);
-        z-index: 1000;
-        display: flex;
-        justify-content: center;
-        gap: 30px;
-    }
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            background: rgba(3, 7, 18, 0.8);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
 
-    nav a {
-        text-decoration: none;
-        color: var(--text-dim);
-        font-family: 'Fira Code', monospace;
-        font-size: 0.9rem;
-    }
+        nav a {
+            text-decoration: none;
+            color: var(--text-dim);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
 
-    nav a:hover, nav a.active {
-        color: var(--accent);
-        text-shadow: 0 0 10px var(--accent-glow);
-    }
+        nav a:hover, nav a.active {
+            color: var(--accent);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
 
-    .container {
-        width: 90%;
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 120px 20px;
-    }
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 120px 20px;
+        }
 
-    .profile-img {
-        width: 140px;
-        height: 140px;
-        border-radius: 24px;
-        border: 1px solid var(--border);
-        box-shadow: 0 0 40px rgba(56, 189, 248, 0.1);
-    }
+        .profile-img {
+            width: 140px;
+            height: 140px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 0 40px rgba(56, 189, 248, 0.1);
+            margin-bottom: 20px;
+        }
 
-    .profile-img:hover {
-        transform: rotate(5deg) scale(1.05);
-        border-color: var(--accent);
-    }
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            position: relative;
+            margin-bottom: 20px;
+        }
 
-    .card {
-        background: var(--card-bg);
-        backdrop-filter: blur(16px);
-        padding: 30px;
-        border-radius: 24px;
-        border: 1px solid var(--border);
-        position: relative;
-    }
+        .project-card {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
 
-    .card::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: 24px;
-        padding: 1px;
-        background: linear-gradient(45deg, var(--accent), transparent, var(--accent));
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        -webkit-mask-composite: xor;
-        mask-composite: exclude;
-        opacity: 0;
-        transition: 0.5s;
-    }
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            background: rgba(15, 23, 42, 0.6);
+            box-shadow: 0 10px 30px -10px var(--accent-glow);
+        }
 
-    .card:hover::before { opacity: 0.5; }
+        .tech-pill {
+            background: rgba(56, 189, 248, 0.05);
+            color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-family: 'Fira Code', monospace;
+        }
 
-    .card:hover {
-        background: rgba(15, 23, 42, 0.8);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-    }
+        .page-section { display: none; }
+        .page-section.active-page { display: block; animation: fadeInUp 0.6s ease forwards; }
 
-    .tech-pill {
-        background: rgba(56, 189, 248, 0.05);
-        color: var(--accent);
-        border: 1px solid rgba(56, 189, 248, 0.1);
-        padding: 4px 12px;
-        border-radius: 100px;
-    }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 40px; }
 
-    .reveal { animation: fadeInUp 0.8s ease forwards; }
+        .copy-btn {
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            margin-top: 10px;
+        }
 
-</style>
+        .copy-btn:active { transform: scale(0.95); }
+
+    </style>
+</head>
+<body>
 
 <nav>
-    <a href="#home" class="active">/home</a>
-    <a href="#projects">/projects</a>
-    <a href="#about">/about</a>
-    <a href="https://github.com/mourntheloss">/github</a>
+    <a data-target="home" class="active">/home</a>
+    <a data-target="projects">/projects</a>
+    <a data-target="about">/about</a>
+    <a href="https://github.com/mourntheloss" target="_blank">/github</a>
 </nav>
 
 <div class="container">
-    <header class="reveal">
-        <img src="https://github.com/mourntheloss.png" alt="mourntheloss" class="profile-img">
-        <div class="header-content">
-            <h1>mourntheloss</h1>
-            <p class="bio">>c++, asm, java</p>
-        </div>
-    </header>
+    
+    <section id="home" class="page-section active-page">
+        <header>
+            <img src="https://github.com/mourntheloss.png" alt="mourntheloss" class="profile-img">
+            <h1 style="font-size: 3.5rem; margin: 0;">mourntheloss</h1>
+            <p style="color: var(--accent); font-family: 'Fira Code'; font-size: 1.2rem;">> low-level software engineer</p>
+        </header>
 
-    </div>
+        <div class="grid">
+            <div class="card">
+                <h3>current focus</h3>
+                <p style="color: var(--text-dim);">learning java</p>
+            </div>
+            <div class="card">
+                <h3>stack</h3>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 15px;">
+                    <span class="tech-pill">c++20</span>
+                    <span class="tech-pill">java</span>
+                    <span class="tech-pill">x86_64 assembly</span>
+                    <span class="tech-pill">modding</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="page-section">
+        <h2 style="font-family: 'Fira Code';">/projects</h2>
+        <div class="grid">
+            <a href="https://github.com/mourntheloss" target="_blank" class="card project-card">
+                <div style="display: flex; justify-content: space-between;">
+                    <h3 style="margin: 0;">System-Core</h3>
+                    <span>↗</span>
+                </div>
+                <p style="color: var(--text-dim);">Advanced C++ library for memory manipulation and system hooks.</p>
+                <span class="tech-pill">C++</span>
+            </a>
+
+            <a href="https://github.com/mourntheloss" target="_blank" class="card project-card">
+                <div style="display: flex; justify-content: space-between;">
+                    <h3 style="margin: 0;">Asm-Optimizer</h3>
+                    <span>↗</span>
+                </div>
+                <p style="color: var(--text-dim);">Hand-optimized assembly routines for cryptographic operations.</p>
+                <span class="tech-pill">ASM</span>
+            </a>
+
+            <a href="https://github.com/mourntheloss" target="_blank" class="card project-card">
+                <div style="display: flex; justify-content: space-between;">
+                    <h3 style="margin: 0;">Bytecode-Tool</h3>
+                    <span>↗</span>
+                </div>
+                <p style="color: var(--text-dim);">Java instrumentation tool for real-time bytecode analysis.</p>
+                <span class="tech-pill">Java</span>
+            </a>
+        </div>
+    </section>
+
+    <section id="about" class="page-section">
+        <h2 style="font-family: 'Fira Code';">/about</h2>
+        <div class="card">
+            <p>i like to do stuff recently i have been learning java</p>
+            <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
+            <h3>contact</h3>
+            <p style="color: var(--text-dim);">discord</p>
+            <button class="copy-btn" onclick="copyDiscord()">copy discord</button>
+            <span id="copy-status" style="margin-left: 10px; font-size: 0.8rem; color: var(--accent);"></span>
+        </div>
+    </section>
+
+</div>
+
+<script>
+    // nav
+    const links = document.querySelectorAll('nav a[data-target]');
+    const sections = document.querySelectorAll('.page-section');
+
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            links.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            sections.forEach(s => {
+                s.classList.remove('active-page');
+                if(s.id === link.dataset.target) s.classList.add('active-page');
+            });
+        });
+    });
+
+    // mouse effect
+    document.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth) * 100;
+        const y = (e.clientY / window.innerHeight) * 100;
+        document.body.style.setProperty('--mouse-x', x + '%');
+        document.body.style.setProperty('--mouse-y', y + '%');
+    });
+
+    // discord copy
+    function copyDiscord() {
+        const tag = "ugrief"; // tags dont exist no more
+        navigator.clipboard.writeText(tag);
+        const status = document.getElementById('copy-status');
+        status.innerText = "Copied!";
+        setTimeout(() => status.innerText = "", 2000);
+    }
+</script>
+
+</body>
+</html>
