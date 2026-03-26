@@ -131,7 +131,6 @@
 
         .copy-btn:active { transform: scale(0.95); }
 
-        /* THE HORRIBLE LEGAL STUFF STYLES */
         #legal-nightmare {
             background: #ff00ff !important;
             color: #00ff00 !important;
@@ -175,6 +174,7 @@
 <nav>
     <a data-target="home" class="active">/home</a>
     <a data-target="projects">/projects</a>
+    <a data-target="addon">/addon</a>
     <a data-target="about">/about</a>
     <a data-target="fun">/fun_stuff</a>
     <a data-target="legal">/legal_stuff</a>
@@ -239,6 +239,38 @@
         </div>
     </section>
 
+    <section id="addon" class="page-section">
+        <div style="text-align: center; margin-bottom: 40px;">
+            <img src="https://github.com/mourntheloss.png" alt="mourntheloss" class="profile-img" style="width: 100px; height: 100px;">
+            <h2 style="font-family: 'Fira Code'; margin-top: 0;">/current_project</h2>
+        </div>
+
+        <div class="grid" style="grid-template-columns: 1fr 1fr;">
+            <div class="card">
+                <h3 style="font-family: 'Fira Code'; font-size: 0.9rem; color: var(--accent);">[notes.log]</h3>
+                <p contenteditable="true" style="outline: none; color: var(--text-dim); min-height: 50px;">
+                    awesome.<br>
+                    main project!!!!
+                </p>
+            </div>
+
+            <div class="card">
+                <h3 style="font-family: 'Fira Code'; font-size: 0.9rem; color: var(--accent);">[github_status]</h3>
+                <div id="addon-commit-container">
+                    <p id="addon-commit-msg" style="font-family: 'Fira Code'; font-size: 0.85rem; margin-bottom: 5px;">Fetching last commit...</p>
+                    <small id="addon-commit-date" style="color: var(--text-dim);"></small>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <a href="https://github.com/mourntheloss/addon" target="_blank" class="card project-card" style="text-align: center; border-style: dashed;">
+                <h3 style="margin: 0;">📦 GITHUB.COM/MOURNTHELOSS/ADDON</h3>
+                <p style="color: var(--text-dim); font-size: 0.9rem;">Click to visit repository</p>
+            </a>
+        </div>
+    </section>
+
     <section id="about" class="page-section">
         <h2 style="font-family: 'Fira Code';">/about</h2>
         <div class="card">
@@ -290,28 +322,18 @@
 </div>
 
 <script>
-    // nav
     const links = document.querySelectorAll('nav a[data-target]');
     const sections = document.querySelectorAll('.page-section');
 
     links.forEach(link => {
         link.addEventListener('click', (e) => {
-            // prevent default link behavior
             e.preventDefault();
-            
             const targetId = link.getAttribute('data-target');
-
-            // remov active llass
             links.forEach(l => l.classList.remove('active'));
-            // actiev class
             link.classList.add('active');
-
-            // hide section
             sections.forEach(s => {
                 s.classList.remove('active-page');
-                if(s.id === targetId) {
-                    s.classList.add('active-page');
-                }
+                if(s.id === targetId) s.classList.add('active-page');
             });
         });
     });
@@ -323,8 +345,26 @@
         document.body.style.setProperty('--mouse-y', y + '%');
     });
 
+    async function fetchAddonCommit() {
+        const url = 'https://api.github.com/repos/mourntheloss/addon/commits?per_page=1';
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            if (data && data.length > 0) {
+                const msg = data[0].commit.message;
+                const date = new Date(data[0].commit.author.date).toLocaleDateString();
+                document.getElementById('addon-commit-msg').innerText = `> "${msg}"`;
+                document.getElementById('addon-commit-date').innerText = `Synced: ${date}`;
+            }
+        } catch (e) {
+            document.getElementById('addon-commit-msg').innerText = "an error occured repo went private or api limit reached";
+        }
+    }
+    fetchAddonCommit();
+
+    // Utility Functions
     function copyDiscord() {
-        const tag = "ugrz"; 
+        const tag = "ugrief"; 
         navigator.clipboard.writeText(tag).then(() => {
             const status = document.getElementById('copy-status');
             status.innerText = "Copied!";
@@ -341,14 +381,14 @@
     const quotes = [
         "a banana walks into a freezer and says what do i do here",
         "i learn",
-        "does anyone else hate gradle? why does it fail at the slightest inconvenience?",
+        "does anyone else hate gradle?",
         "real ones all dislike jeremy",
-        "c# is c++ and java's baby"
-        "bobbys cool"
-        "also try minecraft"
-        "last quote"
-        "no"
-        "funny"
+        "c# is c++ and java's baby",
+        "bobbys cool",
+        "also try minecraft",
+        "last quote",
+        "no",
+        "funny",
         "that joke was very funny"
     ];
 
