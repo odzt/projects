@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mourntheloss</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --surface: #121212;
+            --accent: #38bdf8;
+            --text: #ffffff;
+            --text-dim: #71717a;
+            --border: #27272a;
+            --radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; padding: 0;
+            text-transform: lowercase;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation - Floating Pill */
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 8px;
+            border-radius: 100px;
+            z-index: 1000;
+            display: flex;
+            gap: 5px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        nav a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 100px;
+            transition: var(--transition);
+        }
+
+        nav a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+        nav a.active {
+            color: #000;
+            background: var(--accent);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 120px 20px;
+        }
+
+        /* Section Animations */
+        .page-section { 
+            display: none; 
+            animation: slideUp 0.5s ease forwards;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .active-page { display: block; }
+
+        header {
+            margin-bottom: 60px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .profile-img {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius);
+            border: 2px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .profile-img:hover {
+            border-color: var(--accent);
+            transform: rotate(-5deg) scale(1.1);
+        }
+
+        h1 { font-size: 3rem; letter-spacing: -2px; }
+
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .span-2 { grid-column: span 2; }
+        .span-4 { grid-column: span 4; }
+
+        /* Card with Lift Animation */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 30px;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.1);
+        }
+
+        .tag {
+            color: var(--accent);
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            display: block;
+            letter-spacing: 1px;
+        }
+
+        .tech-pill {
+            display: inline-block;
+            background: #1e1e1e;
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 0.7rem;
+            margin: 5px 5px 0 0;
+            border: 1px solid var(--border);
+        }
+
+        /* Fluid Button */
+        .btn {
+            background: var(--accent);
+            border: none;
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        .btn:active { transform: scale(0.95); }
+
+        #addon-commit-msg { color: var(--accent); font-weight: bold; margin-top: 10px; }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            .span-2, .span-4 { grid-column: span 1; }
+            h1 { font-size: 2.2rem; }
+            nav { width: 90%; justify-content: space-around; font-size: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav id="nav">
+    <a data-target="home" class="active">home</a>
+    <a data-target="projects">projects</a>
+    <a data-target="addon">addon</a>
+    <a data-target="about">about</a>
+    <a data-target="misc">misc</a>
+</nav>
+
+<div class="container">
+    
+    <section id="home" class="page-section active-page">
+        <header>
+            <img src="https://github.com/mourntheloss.png" alt="mourntheloss" class="profile-img">
+            <div>
+                <h1>mourntheloss</h1>
+                <p style="color: var(--accent);">[ low level developers have so much ego ]</p>
+            </div>
+        </header>
+
+        <div class="grid">
+            <div class="card span-2">
+                <span class="tag">current_task</span>
+                <p style="font-size: 1.1rem;">meteor addon, i dont like bytecode</p>
+            </div>
+            <div class="card span-2">
+                <span class="tag">stack</span>
+                <span class="tech-pill">C++20</span>
+                <span class="tech-pill">ASM_X64</span>
+                <span class="tech-pill">JAVA</span>
+                <span class="tech-pill">PYTHON</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="page-section">
+        <h2 style="margin-bottom: 30px;">repositories</h2>
+        <div class="grid">
+            <a href="https://github.com/mourntheloss/addon" target="_blank" style="text-decoration:none; color:inherit;" class="card span-2">
+                <span class="tag">01. github</span>
+                <h3>ADDON</h3>
+                <p style="color: var(--text-dim); margin-top: 10px;">advanced modules for meteor.</p>
+                <div class="tech-pill">JAVA</div>
+            </a>
+            <a href="https://github.com/mourntheloss/recorder" target="_blank" style="text-decoration:none; color:inherit;" class="card span-2">
+                <span class="tag">02. github</span>
+                <h3>RECORDER</h3>
+                <p style="color: var(--text-dim); margin-top: 10px;">c++ lightweight screen capture.</p>
+                <div class="tech-pill">C++17</div>
+            </a>
+        </div>
+    </section>
+
+    <section id="addon" class="page-section">
+        <h2 style="margin-bottom: 30px;">addon notes</h2>
+        <div class="grid">
+            <div class="card span-4">
+                <span class="tag">dev_log</span>
+                <p contenteditable="true" style="outline: none; color: var(--text-dim); font-size: 0.95rem;">
+                    // i am very interested in crystal aura now<br>
+                    // crystal aura plus coming soon? might take a while original is 1.3k and thats mediocre.<br>
+                    // combat modules still number one focus.<br>
+                    // already got anchor aura so crystal might be close
+                </p>
+            </div>
+            <div class="card span-4">
+                <span class="tag">latest_update</span>
+                <p id="addon-commit-msg">syncing...</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="page-section">
+        <h2 style="margin-bottom: 30px;">about</h2>
+        <div class="card span-4">
+            <p>i build high-performance code in c++, assembly, and java primarily for windows and linux</p>
+            <button class="btn" onclick="copyDiscord()">copy discord id</button>
+            <span id="copy-status" style="margin-left: 15px; font-weight: bold; color: var(--accent);"></span>
+        </div>
+    </section>
+
+    <section id="misc" class="page-section">
+        <div class="grid">
+            <div class="card span-2">
+                <span class="tag">random quote</span>
+                <p id="quote-box" style="min-height: 80px;">"system_online"</p>
+                <button class="btn" onclick="newQuote()">reroll</button>
+            </div>
+            <div class="card span-2">
+                <span class="tag">global_int</span>
+                <h1 id="click-count" style="font-size: 4rem;">0</h1>
+                <button class="btn" onclick="incrementClick()">add</button>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<script>
+    const links = document.querySelectorAll('nav a');
+    const sections = document.querySelectorAll('.page-section');
+
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            const target = link.getAttribute('data-target');
+            links.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            sections.forEach(s => {
+                s.classList.remove('active-page');
+                if(s.id === target) s.classList.add('active-page');
+            });
+        });
+    });
+
+    async function fetchAddonCommit() {
+        try {
+            const response = await fetch('https://api.github.com/repos/mourntheloss/addon/commits?per_page=1');
+            const data = await response.json();
+            if (data[0]) {
+                document.getElementById('addon-commit-msg').innerText = `LAST: "${data[0].commit.message}"`;
+            }
+        } catch (e) {
+            document.getElementById('addon-commit-msg').innerText = "OFFLINE";
+        }
+    }
+    fetchAddonCommit();
+
+    function copyDiscord() {
+        navigator.clipboard.writeText("ugf");
+        document.getElementById('copy-status').innerText = ">> copied";
+        setTimeout(() => document.getElementById('copy-status').innerText = "", 2000);
+    }
+
+    let clicks = 0;
+    function incrementClick() {
+        clicks++;
+        document.getElementById('click-count').innerText = clicks;
+    }
+
+    const quotes = [
+        "blueberry.", 
+        "java turns 1kb .java file into 3kb .jar file python turns 3kb .py file into 9 mb .exe file", 
+        "download more ram", 
+        "if u use arm u need to go", 
+        "ppl who bring up bugs like they make code just annoy me 99 bugs in the code shush lil brotato chip"
+    ];
+
+    function newQuote() {
+        document.getElementById('quote-box').innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
+    }
+</script>
+</body>
+</html>
