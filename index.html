@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mourntheloss | active</title>
+    <title>mourntheloss</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #030303;
-            --card-bg: rgba(255, 255, 255, 0.03);
+            --bg: #050505;
+            --card-bg: rgba(255, 255, 255, 0.02);
             --accent: #00f2ff;
-            --glow: rgba(0, 242, 255, 0.5);
+            --accent-glow: rgba(0, 242, 255, 0.3);
             --secondary: #ff007a;
             --text: #ffffff;
-            --text-dim: #999;
-            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            --text-dim: #888;
+            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * { 
@@ -31,18 +31,28 @@
             min-height: 100vh;
         }
 
-        /* Reactive Background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: 
+                radial-gradient(at 0% 0%, rgba(0, 242, 255, 0.03) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(255, 0, 122, 0.03) 0px, transparent 50%);
+            z-index: -2;
+        }
+
         .bg-glow {
             position: fixed;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-            filter: blur(100px);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            filter: blur(80px);
             border-radius: 50%;
-            opacity: 0.1;
+            opacity: 0.15;
             z-index: -1;
             pointer-events: none;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.2s ease-out;
         }
 
         nav {
@@ -50,14 +60,15 @@
             top: 25px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(10, 10, 10, 0.4);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             padding: 6px;
             border-radius: 100px;
             z-index: 9999;
             display: flex;
             gap: 5px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         nav button {
@@ -70,19 +81,12 @@
             padding: 12px 24px;
             transition: var(--transition);
             border-radius: 100px;
-            position: relative;
-            overflow: hidden;
         }
 
         nav button.active {
             color: #fff;
-            background: rgba(255,255,255,0.1);
-            box-shadow: inset 0 0 10px rgba(255,255,255,0.1);
-        }
-
-        nav button:hover:not(.active) {
-            color: var(--accent);
-            background: rgba(0, 242, 255, 0.05);
+            background: rgba(255,255,255,0.08);
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.05);
         }
 
         .container {
@@ -91,73 +95,67 @@
             padding: 160px 20px;
         }
 
-        /* Page Transitions */
         .page-section { 
             display: none; 
             opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
         .page-section.active-page { 
             display: block; 
-            animation: slideIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        @keyframes slideIn {
-            0% { opacity: 0; transform: translateY(30px) scale(0.98); filter: blur(10px); }
-            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-        }
-
-        h1 { 
-            font-size: 5rem; 
-            font-weight: 900;
-            letter-spacing: -5px; 
-            text-transform: lowercase;
-            position: relative;
-        }
-
-        .glitch-text:hover {
-            text-shadow: 0.05em 0 0 var(--secondary), -0.05em -0.025em 0 var(--accent);
-            animation: glitch 500ms infinite;
-        }
-
-        @keyframes glitch {
-            0% { text-shadow: 0.05em 0 0 var(--secondary), -0.05em -0.025em 0 var(--accent); }
-            15% { text-shadow: -0.05em -0.025em 0 var(--secondary), 0.025em 0.025em 0 var(--accent); }
-            50% { text-shadow: 0.025em 0.05em 0 var(--secondary), 0.05em 0 0 var(--accent); }
-            100% { text-shadow: -0.025em 0 0 var(--secondary), -0.025em -0.05em 0 var(--accent); }
-        }
-
+        h1 { font-size: 5rem; font-weight: 900; letter-spacing: -4px; text-transform: lowercase; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
 
         .card {
             background: var(--card-bg);
-            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.05);
             padding: 40px;
             border-radius: 28px;
-            transition: transform 0.1s ease-out, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .tilt-card {
+            transition: transform 0.1s ease-out;
             transform-style: preserve-3d;
-            perspective: 1000px;
         }
 
-        .card:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        .magnet-card {
+            transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        .pill {
-            display: inline-block;
-            background: var(--accent);
-            color: #000;
-            padding: 5px 14px;
-            border-radius: 6px;
-            font-size: 0.6rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            margin-bottom: 15px;
+        .beam-card {
+            overflow: hidden;
+            z-index: 1;
+        }
+        .beam-card::before {
+            content: "";
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: conic-gradient(from 0deg, transparent 70%, var(--accent) 100%);
+            animation: rotateBeam 4s linear infinite;
+            z-index: -2;
+        }
+        .beam-inner {
+            position: absolute;
+            inset: 1px;
+            background: #080808;
+            border-radius: 27px;
+            z-index: -1;
+        }
+        @keyframes rotateBeam {
+            100% { transform: rotate(360deg); }
         }
 
-        .btn {
+        /* Liquid Buttons */
+        .btn-liquid {
+            position: relative;
+            overflow: hidden;
             background: #fff;
             color: #000;
             border: none;
@@ -165,40 +163,43 @@
             border-radius: 18px;
             font-weight: 800;
             cursor: pointer;
-            transition: var(--transition);
-            text-transform: lowercase;
+            z-index: 1;
+            transition: color 0.4s;
+        }
+        .btn-liquid span { position: relative; z-index: 2; }
+        .btn-liquid::after {
+            content: "";
+            position: absolute;
+            top: var(--y, 50%);
+            left: var(--x, 50%);
+            width: 0; height: 0;
+            background: var(--accent);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+            z-index: 1;
+        }
+        .btn-liquid:hover::after { width: 400px; height: 400px; }
+
+        .pill {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .btn:active {
-            transform: scale(0.9);
-        }
-
-        #click-count {
-            font-size: 8rem;
-            font-weight: 900;
-            line-height: 1;
-            margin-bottom: 10px;
-        }
-
-        .profile-img {
-            width: 140px;
-            height: 140px;
-            border-radius: 40px;
-            border: 2px solid var(--accent);
-            transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .profile-img:hover {
-            transform: rotate(5deg) scale(1.1);
-            box-shadow: 0 0 40px var(--glow);
-        }
+        #click-count { font-size: 8rem; font-weight: 900; line-height: 1; }
 
         @media (max-width: 768px) {
             .grid { grid-template-columns: 1fr; }
-            h1 { font-size: 3.5rem; letter-spacing: -2px; }
-            nav { width: 95%; }
-            nav button { padding: 10px 15px; font-size: 0.75rem; }
+            h1 { font-size: 3rem; }
+            nav { width: 90%; overflow-x: auto; justify-content: flex-start; }
         }
     </style>
 </head>
@@ -216,74 +217,75 @@
 
 <div class="container">
     <section id="home" class="page-section active-page">
-        <div class="profile-area" style="text-align: center; margin-bottom: 60px;">
-            <img src="https://github.com/mourntheloss.png" alt="pfp" class="profile-img">
-            <h1 class="glitch-text">mourntheloss</h1>
-            <p style="color: var(--text-dim); font-size: 1.2rem; margin-top: 10px; font-weight: 500;">i still dont know what language is my main language its currently c++ but it can go to asm or java easily</p>
+        <div style="text-align: center; margin-bottom: 60px;">
+            <img src="https://github.com/mourntheloss.png" alt="pfp" style="width:120px; border-radius:35px; border:2px solid var(--accent); margin-bottom:20px;">
+            <h1>mourntheloss</h1>
+            <p style="color: var(--text-dim); font-size: 1.1rem;">focused on c++, java, and asm. i dont know which ones my favorite right now im leaning towards c++</p>
         </div>
-
         <div class="grid">
-            <div class="card tilt-card" data-tilt-color="var(--accent)">
-                <span class="pill">active</span>
-                <h3>updating addon</h3>
-                <p style="color: var(--text-dim); margin-top: 10px;">my magnum opus. updates whenever i feel like it could be 0 commits for a month then 50 commits in one day</p>
+            <div class="card tilt-card">
+                <span class="pill" style="background: var(--accent); color:#000;">status</span>
+                <h3>active project</h3>
+                <p style="color: var(--text-dim); margin-top: 10px;">addon for meteor client</p>
             </div>
-            <div class="card tilt-card" data-tilt-color="var(--secondary)">
+            <div class="card tilt-card">
                 <span class="pill">stack</span>
                 <h3 style="color: var(--accent);">low level</h3>
-                <p style="color: var(--text-dim); font-weight: 800; margin-top: 10px; letter-spacing: 1px;">C++ • ASM • JAVA • PYTHON</p>
+                <p style="color: var(--text-dim); margin-top: 10px; font-weight:800;">C++ • ASM • JAVA • PYTHON</p>
             </div>
         </div>
     </section>
 
     <section id="projects" class="page-section">
-        <h2 style="font-size: 3rem; margin-bottom: 30px; letter-spacing: -2px;">featured</h2>
+        <h2 style="font-size: 3rem; margin-bottom: 30px; letter-spacing: -2px;">best</h2>
         <div class="grid">
-            <div class="card tilt-card">
-                <span class="pill" style="background: #f7df1e;">java</span>
+            <div class="card magnet-card">
+                <span class="pill">java</span>
                 <h3>ADDON</h3>
-                <p style="color: var(--text-dim);">custom meteor client addon that adds modules meteor client are missing</p>
+                <p style="color: var(--text-dim);">an addon for meteor client to add modules it doesnt add</p>
             </div>
-            <div class="card tilt-card">
-                <span class="pill" style="background: #00599c; color: white;">c++</span>
+            <div class="card magnet-card">
+                <span class="pill">c++</span>
                 <h3>RECORDER</h3>
-                <p style="color: var(--text-dim);">screen capture engine.</p>
+                <p style="color: var(--text-dim);">capture engine logic.</p>
             </div>
         </div>
     </section>
 
     <section id="updates" class="page-section">
-        <div class="card" style="width: 100%; border-left: 4px solid var(--secondary);">
-            <span class="pill">internal dev log</span>
-            <div style="font-size: 1.2rem; font-weight: 600; line-height: 2; color: var(--text-dim);">
-                • crystal aura is <span style="color: var(--secondary)">big</span> (1.3k lines)<br>
-                • interested in advanced combat logic now<br>
-                • coming soon<br>
+        <div class="card beam-card">
+            <div class="beam-inner"></div>
+            <span class="pill">v1.4.0 log</span>
+            <div style="font-size: 1.2rem; font-weight: 600; line-height: 2; color: var(--text-dim); position: relative;">
+                • crystal aura optimized for <span style="color: var(--accent)">low latency</span><br>
+                • added asm-level hooks for packet handling<br>
+                • rewriting combat logic from scratch<br>
                 • never dropping this ima be like carti
             </div>
         </div>
     </section>
 
     <section id="about" class="page-section">
-        <div class="card tilt-card" style="text-align: center; padding: 60px;">
-            <h2 style="font-size: 4rem; letter-spacing: -3px; margin-bottom: 10px;">connect</h2>
-            <p style="color: var(--text-dim); margin-bottom: 30px;">system architect & low-level enthusiast</p>
-            <button class="btn" onclick="copyDiscord()">copy discord</button>
-            <p id="copy-status" style="margin-top: 20px; color: var(--accent); font-weight: 800; min-height: 20px;"></p>
+        <div class="card" style="text-align: center; padding: 80px 20px;">
+            <h2 style="font-size: 4rem; margin-bottom: 20px;">do not talk to me</h2>
+            <button class="btn-liquid" onclick="copyDiscord()">
+                <span>copy </span>
+            </button>
+            <p id="copy-status" style="margin-top: 20px; color: var(--accent); font-weight: 800; height: 20px;"></p>
         </div>
     </section>
 
     <section id="extra" class="page-section">
         <div class="grid">
-            <div class="card tilt-card">
-                <span class="pill">logic</span>
-                <h3 id="quote-box" style="height: 80px; font-style: italic;">"i think a lot"</h3>
-                <button class="btn" onclick="newQuote()">new thought</button>
+            <div class="card">
+                <span class="pill">thoughts</span>
+                <h3 id="quote-box" style="height: 80px; font-style: italic; color: var(--text-dim);">"i think a lot"</h3>
+                <button class="btn-liquid" onclick="newQuote()"><span>new thought</span></button>
             </div>
             <div class="card" style="text-align: center;">
-                <span class="pill">clicker</span>
+                <span class="pill">counter</span>
                 <h1 id="click-count">0</h1>
-                <button class="btn" onclick="incrementClick(event)">spam click</button>
+                <button class="btn-liquid" onclick="incrementClick(event)"><span>spam click</span></button>
             </div>
         </div>
     </section>
@@ -292,62 +294,66 @@
 <script>
     const glow = document.getElementById('cursor-glow');
     document.addEventListener('mousemove', (e) => {
-        const x = e.clientX - 300;
-        const y = e.clientY - 300;
-        glow.style.transform = `translate(${x}px, ${y}px)`;
+        glow.style.transform = `translate(${e.clientX - 250}px, ${e.clientY - 250}px)`;
     });
 
     function showPage(pageId) {
-        document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
-        document.getElementById('btn-' + pageId).classList.add('active');
+        const sections = document.querySelectorAll('.page-section');
+        const current = document.querySelector('.active-page');
+        
+        current.style.opacity = '0';
+        current.style.transform = 'translateY(-10px)';
 
-        document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active-page'));
-        document.getElementById(pageId).classList.add('active-page');
-        window.scrollTo({top: 0, behavior: 'smooth'});
+        setTimeout(() => {
+            sections.forEach(sec => sec.classList.remove('active-page'));
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+            
+            const next = document.getElementById(pageId);
+            next.classList.add('active-page');
+            document.getElementById('btn-' + pageId).classList.add('active');
+            
+            setTimeout(() => {
+                next.style.opacity = '1';
+                next.style.transform = 'translateY(0)';
+            }, 50);
+        }, 300);
     }
 
     document.querySelectorAll('.tilt-card').forEach(card => {
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateX = (centerY - y) / 10;
-            const rotateY = (x - centerX) / 10;
-
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            const x = (e.clientX - rect.left) / rect.width - 0.5;
+            const y = (e.clientY - rect.top) / rect.height - 0.5;
+            card.style.transform = `perspective(1000px) rotateX(${y * -15}deg) rotateY(${x * 15}deg) scale(1.02)`;
         });
+        card.addEventListener('mouseleave', () => card.style.transform = '');
+    });
 
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+    document.querySelectorAll('.magnet-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            card.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
+        });
+        card.addEventListener('mouseleave', () => card.style.transform = '');
+    });
+
+    document.querySelectorAll('.btn-liquid').forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            btn.style.setProperty('--x', (e.clientX - rect.left) + 'px');
+            btn.style.setProperty('--y', (e.clientY - rect.top) + 'px');
         });
     });
 
     let clicks = 0;
     function incrementClick(e) {
         clicks++;
-        const count = document.getElementById('click-count');
-        count.innerText = clicks;
-        
-        count.animate([
-            { transform: 'translate(2px, 2px) rotate(0deg)' },
-            { transform: 'translate(-2px, -2px) rotate(1deg)' },
-            { transform: 'translate(0, 0) rotate(0deg)' }
+        document.getElementById('click-count').innerText = clicks;
+        document.getElementById('click-count').animate([
+            { transform: 'scale(1.2)' }, { transform: 'scale(1)' }
         ], { duration: 100 });
-
-        const circle = document.createElement('div');
-        circle.style.cssText = `
-            position: fixed; top: ${e.clientY}px; left: ${e.clientX}px;
-            width: 10px; height: 10px; background: var(--accent);
-            border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%);
-            z-index: 10000;
-        `;
-        document.body.appendChild(circle);
-        circle.animate([
-            { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' },
-            { opacity: 0, transform: 'translate(-50%, -50%) scale(10)' }
-        ], { duration: 500 }).onfinish = () => circle.remove();
     }
 
     function copyDiscord() {
@@ -357,20 +363,12 @@
         setTimeout(() => status.innerText = "", 2000);
     }
 
-    const quotes = [
-        "real ones still hate java", "real homies hate duke.", "donlo is my everything", 
-        "macs are pretty cool", "bugs are just undocumented features", "also try minecraft",
-        "assembly is a love language", "optimizing for fun"
-    ];
-
+    const quotes = ["real ones hate java", "optimization is an art", "asm is a love language", "stay low level"];
     function newQuote() {
         const box = document.getElementById('quote-box');
-        box.style.opacity = 0;
-        setTimeout(() => {
-            box.innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
-            box.style.opacity = 1;
-        }, 200);
+        box.innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
     }
 </script>
+
 </body>
 </html>
